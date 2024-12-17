@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبة التعابير ومعانيها</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+        }
+        h1 {
+            color: #333;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            margin: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .hidden {
+            display: none;
+        }
+        .score {
+            font-size: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>لعبة التعابير ومعانيها</h1>
+        <div id="question"></div>
+        <div id="options"></div>
+        <button id="nextButton" class="hidden">التالي</button>
+        <div id="score" class="score hidden"></div>
+    </div>
+
+    <script>
+        const questions = [
+            { expression: "يَدُهُ مَغْلُولَةٌ", correct: "بَخِيل", options: ["كَرِيم", "بَخِيل", "غَضُوب"] },
+            { expression: "وَضَعَتِ الحَرْبُ أَوْزَارَهَا", correct: "إِنْتَهَت", options: ["بَدَأَت", "إِنْتَهَت", "تَسَارَعَت"] },
+            { expression: "قَطَعَ دَابِرَ الشَّيْءِ", correct: "إِسْتَأْصَلَهُ", options: ["تَرَكَ", "إِسْتَأْصَلَهُ", "حَافَظَ عَلَيْهِ"] },
+            { expression: "ذَهَبَ أَدْرَاجَ الرِّيَاح", correct: "فَشِلَ وَحَقَّقَ", options: ["فَشِلَ وَحَقَّقَ", "تَغَيَّرَ", "اِزْدَهَرَ"] },
+            { expression: "طَارَ النَّوْمُ مِنْ عَيْنَيْهِ", correct: "سَهَرَ وَقَلِقَ", options: ["نَامَ عَمِيقًا", "سَهَرَ وَقَلِقَ", "اِطْمَأَن"] }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        const questionElement = document.getElementById("question");
+        const optionsElement = document.getElementById("options");
+        const nextButton = document.getElementById("nextButton");
+        const scoreElement = document.getElementById("score");
+
+        function showQuestion() {
+            const question = questions[currentQuestionIndex];
+            questionElement.textContent = `ما معنى التعبير: "${question.expression}"؟`;
+            optionsElement.innerHTML = "";
+            question.options.forEach(option => {
+                const button = document.createElement("button");
+                button.textContent = option;
+                button.onclick = () => selectAnswer(option);
+                optionsElement.appendChild(button);
+            });
+        }
+
+        function selectAnswer(selected) {
+            const question = questions[currentQuestionIndex];
+            if (selected === question.correct) {
+                score++;
+                alert("إجابة صحيحة!");
+            } else {
+                alert(`إجابة خاطئة! الإجابة الصحيحة هي: ${question.correct}`);
+            }
+            currentQuestionIndex++;
+            nextButton.classList.remove("hidden");
+        }
+
+        function showScore() {
+            questionElement.textContent = "لقد أنهيت اللعبة!";
+            optionsElement.innerHTML = "";
+            scoreElement.textContent = `مجموع النقاط: ${score} من ${questions.length}`;
+            scoreElement.classList.remove("hidden");
+            nextButton.classList.add("hidden");
+        }
+
+        nextButton.onclick = () => {
+            if (currentQuestionIndex < questions.length) {
+                showQuestion();
+                nextButton.classList.add("hidden");
+            } else {
+                showScore();
+            }
+        };
+
+        showQuestion();
+    </script>
+</body>
+</html>
